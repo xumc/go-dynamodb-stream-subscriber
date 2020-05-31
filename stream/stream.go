@@ -73,7 +73,7 @@ func (r *StreamSubscriber) GetStreamData() (<-chan *dynamodbstreams.Record, <-ch
 				}
 			}
 			if shardId == nil {
-				time.Sleep(time.Second * 10)
+				time.Sleep(time.Second * 1)
 			}
 
 		}
@@ -140,7 +140,7 @@ func (r *StreamSubscriber) GetStreamDataAsync() (<-chan *dynamodbstreams.Record,
 	limit := make(chan struct{}, shardProcessingLimit)
 
 	go func() {
-		time.Sleep(time.Second * 10)
+		time.Sleep(time.Second * 1)
 		for shardInput := range shardsCh {
 			limit <- struct{}{}
 			go func(sInput *dynamodbstreams.GetShardIteratorInput) {
@@ -259,7 +259,7 @@ func (r *StreamSubscriber) processShard(input *dynamodbstreams.GetShardIteratorI
 			sleepDuration = time.Millisecond * 10
 		} else if len(recs.Records) == 0 {
 			// Empty set, but shard is not closed -> sleep a little
-			sleepDuration = time.Second * 10
+			sleepDuration = time.Second * 1
 		}
 
 		time.Sleep(sleepDuration)
